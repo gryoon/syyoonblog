@@ -18,7 +18,7 @@ logging:
     ROOT: DEBUG
     tech.jhipster: DEBUG
     org.hibernate.SQL: DEBUG
-    com.syyoon.blog: DEBUG
+    com.jhipster.demo.blog: DEBUG
 
 spring:
   devtools:
@@ -32,8 +32,8 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./build/h2db/db/syyoonblog;DB_CLOSE_DELAY=-1;MODE=MYSQL
-    username: syyoonblog
+    url: jdbc:h2:file:./target/h2db/db/blog;DB_CLOSE_DELAY=-1;MODE=MYSQL
+    username: blog
     password:
     hikari:
       poolName: Hikari

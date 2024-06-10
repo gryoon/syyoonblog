@@ -22,7 +22,7 @@ const getFieldErrorsTosts = (fieldErrors: FieldErrorVM[]): TostMessage[] =>
     }
     // convert 'something[14].other[4].id' to 'something[].other[].id' so translations can be written to it
     const convertedField = fieldError.field.replace(/\[\d*\]/g, '[]');
-    const fieldName = translate(`syyoonblogApp.${fieldError.objectName}.${convertedField}`);
+    const fieldName = translate(`blogApp.${fieldError.objectName}.${convertedField}`);
     return { message: `Error on field "${fieldName}"`, key: `error.${fieldError.message}`, data: { fieldName } };
   });
 
