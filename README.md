@@ -1,4 +1,4 @@
-# syyoonblog
+# blog
 
 This application was generated using JHipster 8.5.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v8.5.0](https://www.jhipster.tech/documentation-archive/v8.5.0).
 
@@ -40,7 +40,7 @@ Run the following commands in two separate terminals to create a blissful develo
 auto-refreshes when files change on your hard drive.
 
 ```
-./gradlew -x webapp
+./mvnw
 npm start
 ```
 
@@ -91,17 +91,17 @@ For further instructions on how to develop with JHipster, have a look at [Using 
 
 ### Packaging as jar
 
-To build the final jar and optimize the syyoonblog application for production, run:
+To build the final jar and optimize the blog application for production, run:
 
 ```
-./gradlew -Pprod clean bootJar
+./mvnw -Pprod clean verify
 ```
 
 This will concatenate and minify the client CSS and JavaScript files. It will also modify `index.html` so it references these new files.
 To ensure everything worked, run:
 
 ```
-java -jar build/libs/*.jar
+java -jar target/*.jar
 ```
 
 Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
@@ -113,7 +113,7 @@ Refer to [Using JHipster in production][] for more details.
 To package your application as a war in order to deploy it to an application server, run:
 
 ```
-./gradlew -Pprod -Pwar clean bootWar
+./mvnw -Pprod,war clean verify
 ```
 
 ### JHipster Control Center
@@ -131,7 +131,7 @@ docker compose -f src/main/docker/jhipster-control-center.yml up
 To launch your application's tests, run:
 
 ```
-./gradlew test integrationTest jacocoTestReport
+./mvnw verify
 ```
 
 ### Client tests
@@ -141,6 +141,15 @@ Unit tests are run by [Jest][]. They're located in [src/test/javascript/](src/te
 ```
 npm test
 ```
+
+UI end-to-end tests are powered by [Cypress][]. They're located in [src/test/javascript/cypress](src/test/javascript/cypress)
+and can be run by starting Spring Boot in one terminal (`./mvnw spring-boot:run`) and running the tests (`npm run e2e`) in a second one.
+
+#### Lighthouse audits
+
+You can execute automated [lighthouse audits][https://developers.google.com/web/tools/lighthouse/] with [cypress audits][https://github.com/mfrachet/cypress-audit] by running `npm run e2e:cypress:audits`.
+You should only run the audits when your application is packaged with the production profile.
+The lighthouse report is created in `target/cypress/lhreport.html`
 
 ## Others
 
@@ -154,12 +163,18 @@ docker compose -f src/main/docker/sonar.yml up -d
 
 Note: we have turned off forced authentication redirect for UI in [src/main/docker/sonar.yml](src/main/docker/sonar.yml) for out of the box experience while trying out SonarQube, for real use cases turn it back on.
 
-You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the gradle plugin.
+You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the maven plugin.
 
 Then, run a Sonar analysis:
 
 ```
-./gradlew -Pprod clean check jacocoTestReport sonarqube -Dsonar.login=admin -Dsonar.password=admin
+./mvnw -Pprod clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=admin
+```
+
+If you need to re-run the Sonar phase, please be sure to specify at least the `initialize` phase since Sonar properties are loaded from the sonar-project.properties file.
+
+```
+./mvnw initialize sonar:sonar -Dsonar.login=admin -Dsonar.password=admin
 ```
 
 Additionally, Instead of passing `sonar.password` and `sonar.login` as CLI arguments, these parameters can be configured from [sonar-project.properties](sonar-project.properties) as shown below:
@@ -227,5 +242,6 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [Webpack]: https://webpack.github.io/
 [BrowserSync]: https://www.browsersync.io/
 [Jest]: https://facebook.github.io/jest/
+[Cypress]: https://www.cypress.io/
 [Leaflet]: https://leafletjs.com/
 [DefinitelyTyped]: https://definitelytyped.org/
